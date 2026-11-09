@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
+-->
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gluapi - Control Inteligente de tu Glucosa</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Outfit & Inter) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chart.js for Hero Section Analytics preview -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            400: '#2dd4bf',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            900: '#134e4a',
+                            accent: '#00f2fe',
+                            emerald: '#10b981',
+                        },
+                        dark: {
+                            bg: '#0a0f1d',
+                            card: '#111827',
+                            border: 'rgba(255, 255, 255, 0.08)',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        outfit: ['Outfit', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Custom Styles & Parallax Effects */
+        body {
+            background-color: #070b14;
+            color: #f3f4f6;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .font-heading {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        /* Subtle Mesh Gradient Background */
+        .bg-mesh {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(13, 148, 136, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(0, 242, 254, 0.12) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(16, 185, 129, 0.1) 0px, transparent 50%);
+        }
+
+        /* Glassmorphism styling */
+        .glass-card {
+            background: rgba(17, 24, 39, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-card-sm {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .glass-nav {
+            background: rgba(7, 11, 20, 0.75);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        /* Floating Blobs Animation */
+        @keyframes blob-float-1 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(30px, -50px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+
+        @keyframes blob-float-2 {
+            0%, 100% { transform: translate(0px, 0px) scale(1); }
+            33% { transform: translate(-40px, 30px) scale(0.95); }
+            66% { transform: translate(25px, -35px) scale(1.05); }
+        }
+
+        .animate-blob-1 {
+            animation: blob-float-1 14s infinite ease-in-out;
+        }
+
+        .animate-blob-2 {
+            animation: blob-float-2 18s infinite ease-in-out;
+        }
+
+        /* Pulse Glow Effect */
+        .glow-cyan {
+            box-shadow: 0 0 35px -5px rgba(0, 242, 254, 0.35);
+        }
+        
+        .glow-teal {
+            box-shadow: 0 0 35px -5px rgba(20, 184, 166, 0.4);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070b14;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f293d;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #0d9488;
+        }
+
+        /* Parallax Layer classes */
+        .parallax-bg {
+            will-change: transform;
+            transition: transform 0.1s cubic-bezier(0,0,0.2,1);
+        }
+
+        /* Reveal Animation on Scroll */
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Input Range Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 24px;
+            width: 24px;
+            border-radius: 50%;
+            background: #00f2fe;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.8);
+            margin-top: -8px;
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            cursor: pointer;
+            background: #1f293d;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-mesh relative selection:bg-brand-500 selection:text-white">
+
+    <!-- Ambient Glowing Parallax Blobs in Background -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div id="blob1" class="absolute -top-40 -left-40 w-96 h-96 bg-brand-500/20 rounded-full filter blur-[100px] animate-blob-1 parallax-bg" data-speed="0.15"></div>
+        <div id="blob2" class="absolute top-1/2 -right-40 w-[30rem] h-[30rem] bg-brand-accent/15 rounded-full filter blur-[120px] animate-blob-2 parallax-bg" data-speed="-0.1"></div>
+        <div id="blob3" class="absolute -bottom-40 left-1/3 w-[28rem] h-[28rem] bg-emerald-500/15 rounded-full filter blur-[110px] animate-blob-1 parallax-bg" data-speed="0.2"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 glass-nav py-4">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-brand-500 to-brand-accent flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                    <i class="fa-solid font-bold text-lg text-slate-900 fa-droplet"></i>
+                </div>
+                <span class="font-heading text-2xl font-bold bg-gradient-to-r from-white via-slate-200 to-brand-400 bg-clip-text text-transparent">
+                    Gluapi
+                </span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#inicio" class="hover:text-brand-400 transition-colors">Inicio</a>
+                <a href="#caracteristicas" class="hover:text-brand-400 transition-colors">Características</a>
+                <a href="#tracker-demo" class="hover:text-brand-400 transition-colors">Simulador</a>
+                <a href="#como-funciona" class="hover:text-brand-400 transition-colors">Cómo Funciona</a>
+                <a href="#testimonios" class="hover:text-brand-400 transition-colors">Opiniones</a>
+            </nav>
+
+            <!-- CTA Button -->
+            <div class="hidden sm:flex items-center gap-4">
+                <a href="#tracker-demo" class="relative group overflow-hidden px-5 py-2.5 rounded-xl font-semibold text-sm transition-all duration-300 shadow-md">
+                    <span class="absolute inset-0 bg-gradient-to-r from-brand-500 via-brand-400 to-brand-accent group-hover:opacity-90 transition-opacity"></span>
+                    <span class="relative text-slate-950 flex items-center gap-2">
+                        Probar Demo <i class="fa-solid fa-arrow-right text-xs transition-transform group-hover:translate-x-1"></i>
+                    </span>
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-btn" class="md:hidden text-slate-300 hover:text-white p-2 focus:outline-none">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobile-menu" class="hidden md:hidden glass-card mx-4 mt-3 rounded-2xl p-6 border border-slate-800 transition-all">
+            <div class="flex flex-col gap-4 text-slate-200 font-medium">
+                <a href="#inicio" class="mobile-link py-2 border-b border-slate-800">Inicio</a>
+                <a href="#caracteristicas" class="mobile-link py-2 border-b border-slate-800">Características</a>
+                <a href="#tracker-demo" class="mobile-link py-2 border-b border-slate-800">Simulador Interactivo</a>
+                <a href="#como-funciona" class="mobile-link py-2 border-b border-slate-800">Cómo Funciona</a>
+                <a href="#testimonios" class="mobile-link py-2 border-b border-slate-800">Opiniones</a>
+                <a href="#tracker-demo" class="mt-2 text-center py-3 bg-brand-500 text-slate-950 font-bold rounded-xl">Probar Gluapi Gratis</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="inicio" class="relative pt-32 pb-20 md:pt-44 md:pb-32 overflow-hidden z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Hero Content -->
+                <div class="lg:col-span-7 space-y-8 text-center lg:text-left reveal-on-scroll">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card-sm text-brand-400 text-xs font-semibold tracking-wide uppercase border border-brand-500/30">
+                        <span class="w-2 h-2 rounded-full bg-brand-400 animate-ping"></span>
+                        Revolución en salud digital
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                        El control de tu glucosa, <br class="hidden sm:inline">
+                        <span class="bg-gradient-to-r from-brand-400 via-brand-accent to-emerald-400 bg-clip-text text-transparent">
+                            simple, preciso y sin estrés.
+                        </span>
+                    </h1>
+
+                    <p class="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto lg:mx-0 font-normal leading-relaxed">
+                        Gluapi transforma tus lecturas diarias de glucosa en gráficos analíticos claros, alertas inteligentes y reportes listos para compartir con tu médico en segundos.
+                    </p>
+
+                    <!-- Hero CTAs -->
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#tracker-demo" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-slate-950 font-bold text-base hover:shadow-lg hover:shadow-brand-500/25 transition-all transform hover:-translate-y-0.5 text-center flex items-center justify-center gap-3">
+                            <i class="fa-solid fa-calculator"></i>
+                            Usar Registro Interactivo
+                        </a>
+                        <a href="#como-funciona" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card text-slate-200 font-semibold text-base hover:bg-slate-800/80 transition-all text-center border border-slate-700 flex items-center justify-center gap-2">
+                            Ver cómo funciona
+                        </a>
+                    </div>
+
+                    <!-- Key stats summary -->
+                    <div class="pt-6 grid grid-cols-3 gap-4 border-t border-slate-800/80 max-w-lg mx-auto lg:mx-0">
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-white font-heading">3 seg</p>
+                            <p class="text-xs text-slate-400">Tiempo de registro</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-brand-400 font-heading">100%</p>
+                            <p class="text-xs text-slate-400">Gratuito e intuitivo</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl sm:text-3xl font-bold text-emerald-400 font-heading">PDF</p>
+                            <p class="text-xs text-slate-400">Reportes médicos</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Graphic / Animated Mockup with Parallax -->
+                <div class="lg:col-span-5 relative flex justify-center">
+                    <div class="relative w-full max-w-md parallax-bg" data-speed="0.05">
+                        
+                        <!-- Glowing Backlight -->
+                        <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 to-brand-accent rounded-3xl blur-2xl opacity-30 animate-pulse"></div>
+
+                        <!-- Phone Mockup Container -->
+                        <div class="relative glass-card rounded-3xl p-6 border border-slate-700/60 shadow-2xl space-y-6">
+                            <!-- App Header Mock -->
+                            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-9 h-9 rounded-full bg-brand-500/20 text-brand-400 flex items-center justify-center font-bold">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-slate-400">Hola, María</p>
+                                        <p class="text-sm font-semibold text-white">Última lectura: Hoy 08:30 AM</p>
+                                    </div>
+                                </div>
+                                <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                    En Rango
+                                </span>
+                            </div>
+
+                            <!-- Big Main Metric Card -->
+                            <div class="bg-slate-900/80 rounded-2xl p-5 border border-slate-800 text-center relative overflow-hidden">
+                                <div class="absolute top-0 right-0 p-3 opacity-10 text-brand-400 text-6xl">
+                                    <i class="fa-solid fa-heart-pulse"></i>
+                                </div>
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Glucosa en Ayunas</span>
+                                <div class="my-2 flex items-baseline justify-center gap-2">
+                                    <span class="text-5xl font-black text-white tracking-tight font-heading">108</span>
+                                    <span class="text-sm font-medium text-brand-400">mg/dL</span>
+                                </div>
+                                <p class="text-xs text-emerald-400 flex items-center justify-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> Objetivo: 70 - 130 mg/dL
+                                </p>
+                            </div>
+
+                            <!-- Mini Chart Container -->
+                            <div class="space-y-2">
+                                <div class="flex justify-between text-xs text-slate-400">
+                                    <span>Tendencia de la semana</span>
+                                    <span class="text-brand-400 font-semibold">Promedio: 112 mg/dL</span>
+                                </div>
+                                <div class="h-28 w-full">
+                                    <canvas id="heroChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Quick Action Buttons inside mockup -->
+                            <div class="grid grid-cols-2 gap-3 pt-2">
+                                <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50 text-center">
+                                    <p class="text-[11px] text-slate-400">Antes de Comer</p>
+                                    <p class="text-sm font-bold text-slate-200">95 mg/dL</p>
+                                </div>
+                                <div class="bg-slate-800/60 p-3 rounded-xl border border-slate-700/50 text-center">
+                                    <p class="text-[11px] text-slate-400">2h Post Comida</p>
+                                    <p class="text-sm font-bold text-slate-200">128 mg/dL</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FEATURES GRID SECTION -->
+    <section id="caracteristicas" class="py-24 relative z-10 bg-slate-950/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4 reveal-on-scroll">
+                <h2 class="text-xs font-bold text-brand-400 tracking-widest uppercase">Funcionalidades Clave</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-white">Diseñado para simplificar tu monitoreo diario</p>
+                <p class="text-slate-400 text-base">Gluapi te ofrece herramientas completas pero fáciles de usar para tomar el control total de tu bienestar glucémico.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+                
+                <!-- Feature 1 -->
+                <div class="glass-card rounded-2xl p-8 hover:border-brand-500/50 transition-all duration-300 transform hover:-translate-y-2 group reveal-on-scroll">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-400 border border-brand-500/20 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-slate-950 transition-all duration-300">
+                        <i class="fa-solid fa-bolt"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Registro Ultrarrápido</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Guarda tus niveles de glucosa en menos de 3 segundos con etiquetas contextuales (ayunas, después de comer, hora de dormir, etc.).
+                    </p>
+                </div>
+
+                <!-- Feature 2 -->
+                <div class="glass-card rounded-2xl p-8 hover:border-brand-accent/50 transition-all duration-300 transform hover:-translate-y-2 group reveal-on-scroll">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-accent/10 text-brand-accent border border-brand-accent/20 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-accent group-hover:text-slate-950 transition-all duration-300">
+                        <i class="fa-solid fa-chart-line"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Gráficas & Tendencias</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Visualiza de forma clara patrones diarios, semanales y mensuales. Detecta picos de azúcar antes de que se vuelvan un problema.
+                    </p>
+                </div>
+
+                <!-- Feature 3 -->
+                <div class="glass-card rounded-2xl p-8 hover:border-emerald-500/50 transition-all duration-300 transform hover:-translate-y-2 group reveal-on-scroll">
+                    <div class="w-14 h-14 rounded-2xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-emerald-500 group-hover:text-slate-950 transition-all duration-300">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Reportes PDF para Médico</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Exporta reportes médicos formateados y profesionales con un solo clic. Ideal para tus consultas con el endocrinólogo o nutricionista.
+                    </p>
+                </div>
+
+                <!-- Feature 4 -->
+                <div class="glass-card rounded-2xl p-8 hover:border-brand-500/50 transition-all duration-300 transform hover:-translate-y-2 group reveal-on-scroll">
+                    <div class="w-14 h-14 rounded-2xl bg-brand-500/10 text-brand-400 border border-brand-500/20 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-slate-950 transition-all duration-300">
+                        <i class="fa-solid fa-bell"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Recordatorios Inteligentes</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Configura alarmas personalizadas para medir tu glucosa postprandial o tomar tus medicamentos a la hora exacta.
+                    </p>
+                </div>
+
+                <!-- Feature 5 -->
+                <div class="glass-card rounded-2xl p-8 hover:border-amber-500/50 transition-all duration-300 transform hover:-translate-y-2 group reveal-on-scroll">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-400 border border-amber-500/20 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-amber-500 group-hover:text-slate-950 transition-all duration-300">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Alertas Preventivas</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Identifica rápidamente eventos de Hipoglucemia e Hiperglucemia con recomendaciones inmediatas en pantalla.
+                    </p>
+                </div>
+
+                <!-- Feature 6 -->
+                <div class="glass-card rounded-2xl p-8 hover:border-sky-500/50 transition-all duration-300 transform hover:-translate-y-2 group reveal-on-scroll">
+                    <div class="w-14 h-14 rounded-2xl bg-sky-500/10 text-sky-400 border border-sky-500/20 flex items-center justify-center text-2xl mb-6 group-hover:scale-110 group-hover:bg-sky-500 group-hover:text-slate-950 transition-all duration-300">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-3">Privacidad y Respaldo</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Tus datos de salud están cifrados y respaldados de forma segura. Tú eres el único dueño de tu información médica.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- INTERACTIVE SIMULATOR WIDGET SECTION -->
+    <section id="tracker-demo" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4 mb-16 reveal-on-scroll">
+                <span class="px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/10 text-brand-400 border border-brand-500/20">
+                    Probador Interactivo
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold text-white">Simula tu registro en Gluapi</h2>
+                <p class="text-slate-400 text-base">
+                    Ingresa una medida de glucosa y un contexto para probar el sistema interactivo de evaluación rápida en tiempo real.
+                </p>
+            </div>
+
+            <!-- Interactive Widget Card -->
+            <div class="max-w-4xl mx-auto glass-card rounded-3xl p-6 sm:p-10 border border-slate-700/80 shadow-2xl relative overflow-hidden reveal-on-scroll">
+                
+                <!-- Background ambient glow inside widget -->
+                <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-500/10 rounded-full filter blur-3xl pointer-events-none"></div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                    
+                    <!-- Left: Control Inputs -->
+                    <div class="lg:col-span-6 space-y-6">
+                        
+                        <!-- Value Slider & Numeric Input -->
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center">
+                                <label class="text-sm font-semibold text-slate-200">Nivel de Glucosa (mg/dL)</label>
+                                <span class="text-xs text-slate-400">Arrastra el deslizador</span>
+                            </div>
+
+                            <div class="flex items-center gap-4">
+                                <input type="range" id="glucoseSlider" min="50" max="300" value="105" class="w-full">
+                                <input type="number" id="glucoseInput" min="40" max="400" value="105" class="w-24 bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-center text-white font-bold text-lg focus:outline-none focus:border-brand-400">
+                            </div>
+                        </div>
+
+                        <!-- Context Selector -->
+                        <div class="space-y-3">
+                            <label class="text-sm font-semibold text-slate-200"> Momento de la Medición</label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" data-context="fasting" class="context-btn active px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all text-center bg-brand-500/20 text-brand-300 border-brand-500">
+                                    En Ayunas
+                                </button>
+                                <button type="button" data-context="postprandial" class="context-btn px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all text-center bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700">
+                                    Post Comida
+                                </button>
+                                <button type="button" data-context="bedtime" class="context-btn px-3 py-2.5 rounded-xl text-xs font-semibold border transition-all text-center bg-slate-900 text-slate-400 border-slate-800 hover:border-slate-700">
+                                    Antes de Dormir
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Quick preset pills -->
+                        <div class="space-y-2 pt-2">
+                            <span class="text-xs text-slate-400">Ejemplos rápidos:</span>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="preset-btn px-3 py-1 rounded-lg text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700" data-val="65" data-ctx="fasting">Baja (65)</button>
+                                <button class="preset-btn px-3 py-1 rounded-lg text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700" data-val="95" data-ctx="fasting">Normal (95)</button>
+                                <button class="preset-btn px-3 py-1 rounded-lg text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700" data-val="145" data-ctx="postprandial">Elevada (145)</button>
+                                <button class="preset-btn px-3 py-1 rounded-lg text-xs bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700" data-val="210" data-ctx="postprandial">Muy Alta (210)</button>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Right: Dynamic Visual Output Card -->
+                    <div class="lg:col-span-6">
+                        <div id="resultCard" class="bg-slate-900/90 rounded-2xl p-6 border border-slate-800 transition-all duration-300 space-y-6 relative overflow-hidden">
+                            
+                            <!-- Header Status -->
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs font-medium text-slate-400 uppercase tracking-wider">Estado de Lectura</span>
+                                <span id="statusBadge" class="px-3 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                                    Normal
+                                </span>
+                            </div>
+
+                            <!-- Main Glucose Value Display -->
+                            <div class="text-center py-2">
+                                <div class="flex items-baseline justify-center gap-2">
+                                    <span id="displayValue" class="text-6xl font-black text-white font-heading tracking-tight">105</span>
+                                    <span class="text-base font-semibold text-slate-400">mg/dL</span>
+                                </div>
+                                <p id="contextLabel" class="text-xs text-slate-400 mt-1">En ayunas</p>
+                            </div>
+
+                            <!-- Gauge Progress Bar -->
+                            <div class="space-y-1.5">
+                                <div class="flex justify-between text-xs font-medium text-slate-400">
+                                    <span>50</span>
+                                    <span>100</span>
+                                    <span>180</span>
+                                    <span>300+</span>
+                                </div>
+                                <div class="w-full h-3 bg-slate-800 rounded-full overflow-hidden p-0.5 relative">
+                                    <div id="gaugeBar" class="h-full bg-emerald-400 rounded-full transition-all duration-500 w-[20%]"></div>
+                                </div>
+                            </div>
+
+                            <!-- Contextual Tip / Recommendation -->
+                            <div class="p-4 rounded-xl bg-slate-800/50 border border-slate-700/50 flex items-start gap-3">
+                                <div id="tipIcon" class="text-emerald-400 text-xl mt-0.5">
+                                    <i class="fa-solid fa-circle-check"></i>
+                                </div>
+                                <div>
+                                    <h4 id="tipTitle" class="text-sm font-bold text-white">Nivel Óptimo</h4>
+                                    <p id="tipDescription" class="text-xs text-slate-300 mt-0.5 leading-relaxed">
+                                        Tu glucosa se encuentra dentro del rango saludable esperado. ¡Excelente trabajo manteniendo tus hábitos!
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION (Step-by-step with scroll effects) -->
+    <section id="como-funciona" class="py-24 relative z-10 bg-slate-950/60 border-y border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-4 reveal-on-scroll">
+                <h2 class="text-xs font-bold text-brand-400 tracking-widest uppercase">Proceso Sencillo</h2>
+                <p class="text-3xl sm:text-4xl font-extrabold text-white">¿Cómo funciona Gluapi?</p>
+                <p class="text-slate-400 text-base">Tres pasos simples para llevar un control profesional de tu salud desde tu teléfono.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 relative">
+                
+                <!-- Step 1 -->
+                <div class="glass-card rounded-2xl p-8 relative flex flex-col items-center text-center reveal-on-scroll">
+                    <div class="absolute -top-5 w-10 h-10 rounded-full bg-gradient-to-r from-brand-500 to-brand-400 text-slate-950 font-black flex items-center justify-center text-base shadow-lg">
+                        1
+                    </div>
+                    <div class="my-6 text-4xl text-brand-400">
+                        <i class="fa-solid fa-kit-medical"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">1. Mide tu glucosa</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Usa tu glucómetro habitual para obtener tu muestra de glucosa capilar o sensor continuo.
+                    </p>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="glass-card rounded-2xl p-8 relative flex flex-col items-center text-center reveal-on-scroll">
+                    <div class="absolute -top-5 w-10 h-10 rounded-full bg-gradient-to-r from-brand-400 to-brand-accent text-slate-950 font-black flex items-center justify-center text-base shadow-lg">
+                        2
+                    </div>
+                    <div class="my-6 text-4xl text-brand-accent">
+                        <i class="fa-solid fa-mobile-screen-button"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">2. Regístrala en 3 segundos</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Abre Gluapi, escribe el valor, selecciona si es en ayunas o post-comida y presiona guardar.
+                    </p>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="glass-card rounded-2xl p-8 relative flex flex-col items-center text-center reveal-on-scroll">
+                    <div class="absolute -top-5 w-10 h-10 rounded-full bg-gradient-to-r from-brand-accent to-emerald-400 text-slate-950 font-black flex items-center justify-center text-base shadow-lg">
+                        3
+                    </div>
+                    <div class="my-6 text-4xl text-emerald-400">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">3. Analiza y comparte</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Observa gráficos de tendencias automáticos y genera reportes PDF para tu médico de cabecera.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS & STATS -->
+    <section id="testimonios" class="py-24 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="text-center max-w-2xl mx-auto mb-16 space-y-3 reveal-on-scroll">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-white">Lo que dicen nuestros usuarios</h2>
+                <p class="text-slate-400 text-sm">Gluapi está ayudando a cientos de personas a vivir con mayor tranquilidad.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                
+                <!-- Testimonial 1 -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 reveal-on-scroll">
+                    <div class="flex text-amber-400 gap-1 text-sm">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-300 text-sm italic">
+                        "Antes anotaba todo en una libreta de papel que siempre olvidaba llevar al doctor. Ahora exporto el PDF desde Gluapi y mi endocrinólogo queda fascinado."
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-brand-400">
+                            RC
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Roberto Carlos M.</p>
+                            <p class="text-xs text-slate-400">Usuario hace 8 meses</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 reveal-on-scroll">
+                    <div class="flex text-amber-400 gap-1 text-sm">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-300 text-sm italic">
+                        "Las alertas de rango y los colores me ayudan a saber de inmediato si debo ajustar mi alimentación del día. Súper recomendada y fácil de usar."
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-brand-accent">
+                            AM
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">Ana María G.</p>
+                            <p class="text-xs text-slate-400">Usuaria hace 1 año</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="glass-card rounded-2xl p-6 space-y-4 reveal-on-scroll">
+                    <div class="flex text-amber-400 gap-1 text-sm">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="text-slate-300 text-sm italic">
+                        "Lo que más me gusta es la rapidez del registro. En solo unos segundos ingreso el valor y puedo seguir con mi día. Excelente aplicación."
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <div class="w-10 h-10 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center font-bold text-emerald-400">
+                            DL
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-white">David López</p>
+                            <p class="text-xs text-slate-400">Usuario hace 5 meses</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION BANNER -->
+    <section class="py-20 relative z-10">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative glass-card rounded-3xl p-10 sm:p-16 text-center border border-brand-500/30 overflow-hidden shadow-2xl">
+                
+                <!-- Background Glowing accents -->
+                <div class="absolute -top-24 -left-24 w-64 h-64 bg-brand-500/20 rounded-full filter blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -right-24 w-64 h-64 bg-brand-accent/20 rounded-full filter blur-3xl pointer-events-none"></div>
+
+                <div class="relative z-10 space-y-6 max-w-2xl mx-auto">
+                    <h2 class="text-3xl sm:text-5xl font-extrabold text-white">
+                        Comienza a cuidar tu glucosa hoy con Gluapi
+                    </h2>
+                    <p class="text-slate-300 text-base">
+                        Únete a miles de personas que gestionan su salud de manera más inteligente, rápida y precisa.
+                    </p>
+                    
+                    <div class="flex flex-col sm:flex-row justify-center items-center gap-4 pt-4">
+                        <a href="#tracker-demo" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-brand-500 to-brand-accent text-slate-950 font-bold text-base hover:shadow-lg hover:shadow-brand-500/30 transition-all transform hover:-translate-y-0.5 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-circle-play"></i> Probar Simulador Web
+                        </a>
+                        <button onclick="alert('Gluapi App estará disponible muy pronto en tiendas oficiales App Store y Google Play.')" class="w-full sm:w-auto px-8 py-4 rounded-xl glass-card text-white font-semibold text-base hover:bg-slate-800 transition-all flex items-center justify-center gap-2 border border-slate-700">
+                            <i class="fa-brands fa-apple text-lg"></i> App Store / Android
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-900 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center text-slate-950 font-bold">
+                    <i class="fa-solid fa-droplet text-sm"></i>
+                </div>
+                <span class="font-heading text-xl font-bold text-white">Gluapi</span>
+                <span class="text-xs text-slate-500 ml-2">© 2026 Gluapi Inc. Todos los derechos reservados.</span>
+            </div>
+
+            <div class="flex items-center gap-6 text-sm">
+                <a href="#inicio" class="hover:text-brand-400 transition-colors">Inicio</a>
+                <a href="#caracteristicas" class="hover:text-brand-400 transition-colors">Características</a>
+                <a href="#tracker-demo" class="hover:text-brand-400 transition-colors">Simulador</a>
+                <a href="#como-funciona" class="hover:text-brand-400 transition-colors">Cómo Funciona</a>
+            </div>
+
+            <div class="flex gap-4 text-slate-400 text-lg">
+                <a href="#" class="hover:text-brand-400 transition-colors"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" class="hover:text-brand-400 transition-colors"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" class="hover:text-brand-400 transition-colors"><i class="fa-brands fa-github"></i></a>
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // 1. Initialize Mockup Hero Chart with Chart.js
+        window.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('heroChart').getContext('2d');
+            
+            const gradient = ctx.createLinearGradient(0, 0, 0, 100);
+            gradient.addColorStop(0, 'rgba(20, 184, 166, 0.4)');
+            gradient.addColorStop(1, 'rgba(20, 184, 166, 0.0)');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'],
+                    datasets: [{
+                        label: 'Glucosa (mg/dL)',
+                        data: [115, 98, 110, 125, 102, 95, 108],
+                        borderColor: '#2dd4bf',
+                        borderWidth: 2.5,
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#00f2fe',
+                        pointRadius: 3,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 10 } } },
+                        y: { display: false, min: 60, max: 160 }
+                    }
+                }
+            });
+        });
+
+        // 2. Parallax Scrolling Engine
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const parallaxElements = document.querySelectorAll('.parallax-bg');
+            
+            parallaxElements.forEach(el => {
+                const speed = parseFloat(el.getAttribute('data-speed') || '0.1');
+                el.style.transform = `translateY(${scrolled * speed}px)`;
+            });
+
+            // Dynamic Navbar blur/shadow background
+            const navbar = document.getElementById('navbar');
+            if (scrolled > 50) {
+                navbar.classList.add('shadow-xl', 'py-3');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.remove('shadow-xl');
+                navbar.classList.add('py-4');
+            }
+        });
+
+        // 3. Scroll Reveal Animation (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal-on-scroll').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+        // 4. Mobile Navigation Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        document.querySelectorAll('.mobile-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // 5. Interactive Glucose Simulator Logic
+        const glucoseSlider = document.getElementById('glucoseSlider');
+        const glucoseInput = document.getElementById('glucoseInput');
+        const displayValue = document.getElementById('displayValue');
+        const statusBadge = document.getElementById('statusBadge');
+        const gaugeBar = document.getElementById('gaugeBar');
+        const contextLabel = document.getElementById('contextLabel');
+        const tipIcon = document.getElementById('tipIcon');
+        const tipTitle = document.getElementById('tipTitle');
+        const tipDescription = document.getElementById('tipDescription');
+        const contextBtns = document.querySelectorAll('.context-btn');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+
+        let currentContext = 'fasting'; // 'fasting', 'postprandial', 'bedtime'
+
+        function updateGlucoseSimulator() {
+            let val = parseInt(glucoseInput.value) || 100;
+            if (val < 40) val = 40;
+            if (val > 400) val = 400;
+
+            // Sync Slider and Input
+            glucoseSlider.value = val;
+            displayValue.innerText = val;
+
+            // Calculate Progress Gauge percentage (min: 50, max: 300)
+            let pct = Math.min(Math.max(((val - 50) / (250)) * 100, 5), 100);
+            gaugeBar.style.width = `${pct}%`;
+
+            // Evaluation rules based on Context
+            let status = 'Normal';
+            let badgeClass = '';
+            let barColor = '';
+            let title = '';
+            let desc = '';
+            let iconClass = '';
+
+            if (val < 70) {
+                // Hypoglycemia
+                status = 'Hipoglucemia (Baja)';
+                badgeClass = 'bg-rose-500/20 text-rose-400 border-rose-500/30';
+                barColor = '#f43f5e';
+                iconClass = 'fa-solid fa-triangle-exclamation text-rose-400';
+                title = 'Alerta: Glucosa Baja';
+                desc = 'Toma 15g de carbohidratos de rápida acción (p. ej. medio vaso de jugo) y vuelve a medir en 15 minutos.';
+            } else if (currentContext === 'fasting') {
+                contextLabel.innerText = 'Contexto: En ayunas';
+                if (val >= 70 && val <= 99) {
+                    status = 'Normal (Óptimo)';
+                    badgeClass = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+                    barColor = '#10b981';
+                    iconClass = 'fa-solid fa-circle-check text-emerald-400';
+                    title = 'Rango Óptimo en Ayunas';
+                    desc = 'Tus niveles están en perfecto equilibrio. ¡Mantén tus hábitos saludables!';
+                } else if (val >= 100 && val <= 125) {
+                    status = 'Pre-diabetes / Elevada';
+                    badgeClass = 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+                    barColor = '#f59e0b';
+                    iconClass = 'fa-solid fa-triangle-exclamation text-amber-400';
+                    title = 'Nivel Ligeramente Elevado';
+                    desc = 'Se sugiere revisar el consumo de carbohidratos refinados y consultar a tu médico en tu próximo chequeo.';
+                } else {
+                    status = 'Alta (Hiperglucemia)';
+                    badgeClass = 'bg-red-500/20 text-red-400 border-red-500/30';
+                    barColor = '#ef4444';
+                    iconClass = 'fa-solid fa-circle-exclamation text-red-400';
+                    title = 'Nivel Elevado de Glucosa';
+                    desc = 'Nivel superior al deseado en ayunas. Registra este evento en Gluapi para darle seguimiento con tu doctor.';
+                }
+            } else if (currentContext === 'postprandial') {
+                contextLabel.innerText = 'Contexto: 2h Después de comer';
+                if (val < 140) {
+                    status = 'Normal Postprandial';
+                    badgeClass = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+                    barColor = '#10b981';
+                    iconClass = 'fa-solid fa-circle-check text-emerald-400';
+                    title = 'Excelente Respuesta a la Comida';
+                    desc = 'Tu cuerpo procesó adecuadamente los alimentos. Buena tolerancia a los carbohidratos consumidos.';
+                } else if (val >= 140 && val <= 199) {
+                    status = 'Elevada Postprandial';
+                    badgeClass = 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+                    barColor = '#f59e0b';
+                    iconClass = 'fa-solid fa-triangle-exclamation text-amber-400';
+                    title = 'Pico de Glucosa Moderado';
+                    desc = 'Una caminata ligera de 10 a 15 minutos puede ayudarte a reducir este pico de glucosa postprandial.';
+                } else {
+                    status = 'Hiperglucemia Alta';
+                    badgeClass = 'bg-red-500/20 text-red-400 border-red-500/30';
+                    barColor = '#ef4444';
+                    iconClass = 'fa-solid fa-circle-exclamation text-red-400';
+                    title = 'Nivel Muy Alto Postprandial';
+                    desc = 'Evita bebidas azucaradas y carbohidratos ultraprocesados. Mantente bien hidratado con agua natural.';
+                }
+            } else {
+                contextLabel.innerText = 'Contexto: Antes de dormir';
+                if (val >= 100 && val <= 140) {
+                    status = 'Ideal Nocturno';
+                    badgeClass = 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
+                    barColor = '#10b981';
+                    iconClass = 'fa-solid fa-moon text-emerald-400';
+                    title = 'Rango Seguro para Descansar';
+                    desc = 'Nivel ideal para ir a dormir sin riesgo cercano de bajones o picos nocturnos.';
+                } else {
+                    status = val < 100 ? 'Atención (Baja para la noche)' : 'Elevada Nocturna';
+                    badgeClass = 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+                    barColor = '#f59e0b';
+                    iconClass = 'fa-solid fa-triangle-exclamation text-amber-400';
+                    title = 'Precaución Nocturna';
+                    desc = 'Monitorea cómo te sientes antes de acostarte. Registra siempre en Gluapi para ver tus promedios.';
+                }
+            }
+
+            // Apply updates to UI
+            statusBadge.innerText = status;
+            statusBadge.className = `px-3 py-1 rounded-full text-xs font-bold border ${badgeClass}`;
+            gaugeBar.style.backgroundColor = barColor;
+            tipIcon.innerHTML = `<i class="${iconClass}"></i>`;
+            tipTitle.innerText = title;
+            tipDescription.innerText = desc;
+        }
+
+        // Event Listeners for Simulator
+        glucoseSlider.addEventListener('input', (e) => {
+            glucoseInput.value = e.target.value;
+            updateGlucoseSimulator();
+        });
+
+        glucoseInput.addEventListener('input', () => {
+            updateGlucoseSimulator();
+        });
+
+        contextBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                contextBtns.forEach(b => {
+                    b.classList.remove('active', 'bg-brand-500/20', 'text-brand-300', 'border-brand-500');
+                    b.classList.add('bg-slate-900', 'text-slate-400', 'border-slate-800');
+                });
+                btn.classList.add('active', 'bg-brand-500/20', 'text-brand-300', 'border-brand-500');
+                btn.classList.remove('bg-slate-900', 'text-slate-400', 'border-slate-800');
+
+                currentContext = btn.getAttribute('data-context');
+                updateGlucoseSimulator();
+            });
+        });
+
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const val = btn.getAttribute('data-val');
+                const ctx = btn.getAttribute('data-ctx');
+                
+                glucoseInput.value = val;
+                
+                // Trigger context button click
+                const targetCtxBtn = document.querySelector(`.context-btn[data-context="${ctx}"]`);
+                if (targetCtxBtn) targetCtxBtn.click();
+                
+                updateGlucoseSimulator();
+            });
+        });
+
+        // Initialize Simulator Default State
+        updateGlucoseSimulator();
+    </script>
+</body>
+</html>

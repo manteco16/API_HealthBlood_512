@@ -1,0 +1,8 @@
+.git
+.gitignore
+build
+dist
+target
+nbproject/private
+*.log
+.DS_Store
