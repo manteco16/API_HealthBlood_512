@@ -14,6 +14,9 @@ RUN mvn -B -q clean package -DskipTests
 # Etapa 2: ejecutar en Tomcat 11 (Jakarta EE 11)
 FROM tomcat:11-jdk21-temurin
 
+# Limita la memoria para el plan gratuito de Render (512 MB)
+ENV JAVA_OPTS="-Xms64m -Xmx256m -XX:MaxMetaspaceSize=128m"
+
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 COPY --from=build /app/target/API_HealthBlood_512.war /usr/local/tomcat/webapps/ROOT.war

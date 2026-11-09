@@ -1,33 +1,11 @@
+-- Datos de ejemplo compatibles con TiDB Cloud Starter.
+-- Ejecutar despues de database/schema.sql.
+-- INSERT IGNORE permite ejecutar este archivo varias veces sin errores de duplicados.
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!50503 SET NAMES utf8mb4 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+USE gluco_api;
 
-LOCK TABLES `usuario` WRITE;
-/*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
-INSERT INTO `usuario` (`idUsuario`, `nombre`, `primerApellido`, `segundoApellido`, `email`) VALUES (1,'Osmar','G','R','@gmail.com');
-/*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
-UNLOCK TABLES;
+INSERT IGNORE INTO usuario (idUsuario, nombre, primerApellido, segundoApellido, email)
+VALUES (1, 'Ana', 'Perez', 'Lopez', 'ana@example.com');
 
-LOCK TABLES `medida` WRITE;
-/*!40000 ALTER TABLE `medida` DISABLE KEYS */;
-INSERT INTO `medida` (`idMedida`, `idUsuario`, `glucosa`, `fechaHora`, `contexto`, `notas`) VALUES (1,1,95,'2026-11-09 15:38:59','ayunas','sin sintomas');
-/*!40000 ALTER TABLE `medida` ENABLE KEYS */;
-UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
+INSERT IGNORE INTO medida (idMedida, idUsuario, glucosa, fechaHora, contexto, notas)
+VALUES (1, 1, 95, NOW(), 'ayunas', 'sin sintomas');

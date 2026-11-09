@@ -3,6 +3,11 @@ services:
     name: healthblood-api
     runtime: docker
     plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    autoDeploy: true
     healthCheckPath: /api/glucosa/saludar
     envVars:
       - key: DB_HOST
@@ -17,3 +22,5 @@ services:
         sync: false
       - key: DB_SSL_MODE
         value: VERIFY_IDENTITY
+      - key: JAVA_OPTS
+        value: "-Xms64m -Xmx256m -XX:MaxMetaspaceSize=128m"

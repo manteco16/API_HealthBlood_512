@@ -25,9 +25,13 @@ public class ConnectionMysql {
 
         String url = "jdbc:mysql://" + host + ":" + port + "/" + dbName;
         String parametros = "?sslMode=" + sslMode
-                + "&useUnicode=true&characterEncoding=utf-8";
+                + "&useUnicode=true&characterEncoding=utf-8"
+                + "&serverTimezone=UTC";
 
-        if (!"DISABLED".equalsIgnoreCase(sslMode)) {
+        if ("DISABLED".equalsIgnoreCase(sslMode)) {
+            // MySQL 8 usa caching_sha2_password; sin SSL se requiere recuperar la clave pública.
+            parametros += "&allowPublicKeyRetrieval=true";
+        } else {
             parametros += "&enabledTLSProtocols=TLSv1.2,TLSv1.3";
         }
 
