@@ -10,17 +10,7 @@ services:
     autoDeploy: true
     healthCheckPath: /api/glucosa/saludar
     envVars:
-      - key: DB_HOST
-        sync: false
-      - key: DB_PORT
-        value: "4000"
-      - key: DB_NAME
-        value: gluco_api
-      - key: DB_USER
-        sync: false
-      - key: DB_PASSWORD
-        sync: false
       - key: DB_SSL_MODE
-        value: VERIFY_IDENTITY
+        value: DISABLED
       - key: JAVA_OPTS
-        value: "-Xms64m -Xmx256m -XX:MaxMetaspaceSize=128m"
+        value: "-Xms64m -Xmx160m -XX:MaxMetaspaceSize=96m"
