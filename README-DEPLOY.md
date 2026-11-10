@@ -1,5 +1,7 @@
 # Despliegue en Render
 
+**Aplicación en producción:** <https://healthblood-api.onrender.com>
+
 Este proyecto conserva la estructura original de NetBeans (`src/java`, `web`, `nbproject`) y agrega un build Maven y un Dockerfile para desplegar en Render.
 
 - Frontend: `https://<servicio>.onrender.com/`

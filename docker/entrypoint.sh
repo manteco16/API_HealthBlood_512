@@ -7,6 +7,7 @@ PORT="${PORT:-8080}"
 echo "Starting Tomcat on port ${PORT}"
 
 sed -i "s/port=\"8080\"/port=\"${PORT}\"/" /usr/local/tomcat/conf/server.xml
+sed -i 's/<Server port="8005" shutdown="SHUTDOWN">/<Server port="-1" shutdown="SHUTDOWN">/' /usr/local/tomcat/conf/server.xml
 
 if ! grep -q "port=\"${PORT}\"" /usr/local/tomcat/conf/server.xml; then
   echo "ERROR: no se pudo configurar el puerto ${PORT} en server.xml" >&2
